@@ -20,15 +20,11 @@ jobs:
     - save_cache:
         key: pip-{{ checksum "requirements.txt"  }}
         paths:
-        - /home/circleci/.local/lib/
+        - ./venv
     - run:
-        command: ./hello.py test
-        name: Test
-workflows:
-  main:
-    jobs:
-    - build-and-test
-  version: 2
+        command: venv/bin/activate python manage.py test
+        name: run lint
+
 
 # Original config.yml file:
 # version: 2.1
