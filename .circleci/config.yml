@@ -28,7 +28,7 @@ workflows:
   main:
     jobs:
     - build-and-test
-#   version: 2
+  version: 2
 
 # Original config.yml file:
 # version: 2.1
