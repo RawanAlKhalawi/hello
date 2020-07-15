@@ -1,21 +1,54 @@
-version: 2.1
-
-orbs:
-  python: circleci/python@0.2.1
-
+# Orb 'circleci/python@0.2.1' resolved to 'circleci/python@0.2.1'
+version: 2
 jobs:
   build-and-test:
-    executor: python/default
+    docker:
+    - image: circleci/python:latest
     steps:
-      - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
-      - run:
-          command: ./manage.py test
-          name: Test
-
+    - checkout
+    - restore_cache:
+        keys:
+        - pip-{{ checksum "requirements.txt"  }}
+    - run:
+        command: |
+          if true; then
+            pip install --user -r requirements.txt
+          else
+            pip install -r requirements.txt
+          fi
+        name: Install Dependencies
+    - save_cache:
+        key: pip-{{ checksum "requirements.txt"  }}
+        paths:
+        - /home/circleci/.local/lib/
+    - run:
+        command: ./manage.py test
+        name: Test
 workflows:
   main:
     jobs:
-      - build-and-test
+    - build-and-test
+#   version: 2
+
+# Original config.yml file:
+# version: 2.1
+# 
+# orbs:
+#   python: circleci/python@0.2.1
+# 
+# jobs:
+#   build-and-test:
+#     executor: python/default
+#     steps:
+#       - checkout
+#       - python/load-cache
+#       - python/install-deps
+#       - python/save-cache
+#       - run:
+#           command: ./manage.py test
+#           name: Test
+# 
+# workflows:
+#   main:
+#     jobs:
+#       - build-and-test
