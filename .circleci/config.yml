@@ -22,7 +22,7 @@ jobs:
         paths:
         - /home/circleci/.local/lib/
     - run:
-        command: ./manage.py test
+        command: ./hello.py test
         name: Test
 workflows:
   main:
